@@ -3,7 +3,7 @@
 Plugin Name:  Payment Method Order Colums
 Plugin URI:   https://www.eraclito.it/applicazioni-web/poste-delivery-business-integrazione-woocommerce/
 Description:  Add a column to toder list to filter orders by payment method
-Version:      1.1.0
+Version:      1.2.0
 Author:       Eraclito - Alessio Rosi 
 Author URI:   https://www.eraclito.it
 License:      GPL2
@@ -23,7 +23,7 @@ Domain Path:  /languages
 function filter_manage_edit_shop_order_columns( $columns ) {    
     // Add new column after order status (4) column
     return array_slice( $columns, 0, 4, true )
-    + array( 'order_payment_method' => __( 'Payment method', 'woocommerce' ) )
+    + array( 'order_payment_method' => __( 'Metodo di Pagamento', 'woocommerce' ) )
     + array_slice( $columns, 4, NULL, true );
 }
 add_filter( 'manage_edit-shop_order_columns', 'filter_manage_edit_shop_order_columns', 10, 1 );
@@ -36,7 +36,7 @@ function action_manage_shop_order_posts_custom_column( $column, $post_id ) {
         $order = wc_get_order( $post_id );
     
         // Get the payment method
-        $payment_method = $order->get_payment_method();
+        $payment_method = $order->get_payment_method_title();
         
         // NOT empty
         if ( ! empty ( $payment_method ) ) {
@@ -64,10 +64,12 @@ function action_restrict_manage_posts( $post_type, $which ) {
 
         // Create a drop-down list 
         echo '<select name="' . $filter_id . '">
-        <option value="">' . __( 'Filter by payment method', 'woocommerce' ) . '</option>';
+        <option value="">' . __( 'Metodo di pagamento', 'woocommerce' ) . '</option>';
 
-        foreach ( $available_gateways as $key => $available_gateway ) {
-            printf( '<option %s value="%s">%s</option>', $key === $current ? 'selected="selected"' : '', $key, ucfirst( $key ) );
+       // foreach ( $available_gateways as $key => $available_gateway ) {
+       	foreach ( $available_gateways as $key ) {
+         //   printf( '<option %s value="%s">%s</option>', $key === $current ? 'selected="selected"' : '', $key, ucfirst( $key ) );
+         	   printf( '<option %s value="%s">%s</option>', $key->id === $current ? 'selected="selected"' : '', $key->id, $key->get_title() );
         }
         
         echo '</select>';
