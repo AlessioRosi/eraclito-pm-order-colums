@@ -3,7 +3,7 @@
 Plugin Name:  Payment Method Order Colums
 Plugin URI:   https://www.eraclito.it/applicazioni-web/poste-delivery-business-integrazione-woocommerce/
 Description:  Add a column to toder list to filter orders by payment method
-Version:      1.2.0
+Version:      1.3.0
 Author:       Eraclito - Alessio Rosi 
 Author URI:   https://www.eraclito.it
 License:      GPL2
