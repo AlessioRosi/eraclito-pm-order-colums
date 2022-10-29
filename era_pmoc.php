@@ -96,7 +96,13 @@ function filter_request( $vars ) {
 add_filter( 'request', 'filter_request', 10, 1 );
 
 
-
+// Make custom column sortable
+add_filter( "manage_edit-shop_order_sortable_columns", 'shop_order_column_meta_field_sortable' );
+function shop_order_column_meta_field_sortable( $columns )
+{
+    $meta_key = '_payment_method';
+    return wp_parse_args( array('order_payment_method' => $meta_key), $columns );
+}
 
 
 ?>
