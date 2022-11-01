@@ -3,7 +3,7 @@
 Plugin Name:  Payment Method Order Column
 Plugin URI:   https://www.eraclito.it/applicazioni-web/poste-delivery-business-integrazione-woocommerce/
 Description:  Add a column to to oder list to filter orders by payment method
-Version:      1.4.0
+Version:      1.5.0
 Author:       Eraclito - Alessio Rosi 
 Author URI:   https://www.eraclito.it
 License:      GPL2
@@ -245,7 +245,7 @@ if( ! class_exists( 'era_pmocChecker' ) ) {
 			) {
 				$res = new stdClass();
 				$res->slug = $this->plugin_slug;
-				$res->plugin = plugin_basename( __FILE__ ); // misha-update-plugin/misha-update-plugin.php
+				$res->plugin = plugin_basename( __FILE__ ); 
 				$res->new_version = $remote->version;
 				$res->tested = $remote->tested;
 				$res->package = $remote->download_url;
