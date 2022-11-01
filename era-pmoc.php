@@ -131,7 +131,7 @@ if( ! class_exists( 'era_pmocChecker' ) ) {
 		public function __construct() {
 
 			$this->plugin_slug = plugin_basename( __DIR__ );
-			$this->version = '1.4';
+			$this->version = '1.5';
 			$this->cache_key = 'eraclito_pmoc_upd';
 			$this->cache_allowed = false;
 
