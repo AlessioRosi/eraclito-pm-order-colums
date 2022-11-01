@@ -15,7 +15,7 @@ Domain Path:  /languages
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) { exit; }
-define('PMOC_VERSION', '1.3');
+define('PMOC_VERSION', '1.5');
 
 // register_activation
 function pmoc_activation() {
