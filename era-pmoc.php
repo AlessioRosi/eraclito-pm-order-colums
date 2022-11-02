@@ -48,11 +48,35 @@ function action_manage_shop_order_posts_custom_column( $column, $post_id ) {
         $order = wc_get_order( $post_id );
     
         // Get the payment method
-        $payment_method = $order->get_payment_method_title();
+		$payment_method = $order->get_payment_method();
+        $payment_method_title = $order->get_payment_method_title();
         
         // NOT empty
         if ( ! empty ( $payment_method ) ) {
-            echo ucfirst( $payment_method );
+			switch ($payment_method) {
+				case 'cod':
+					//echo '<img src="' . plugin_dir_url( __FILE__ ) .'/img/cash.svg" width="30" height="30">';
+					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/cash.svg' width='30' height='30'></a></span></mark>";
+					break;
+				case 'bacs':
+					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/wired-transfer.svg' width='30' height='30'></a></span></mark>";
+					break;
+				case 'cheque':
+					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/bollettino.svg' width='30' height='30'></a></span></mark>";
+					break;
+				case 'paypal':
+					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/credit-card.svg' width='30' height='30'></a></span></mark>";
+					break;
+				case 'stripe':
+					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/stripe.svg' width='30' height='30'></a></span></mark>";
+					break;					
+				default:
+					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/generic.svg' width='30' height='30'></a></span></mark>";
+					break;
+
+										
+			}
+
         } else {
             echo __( 'N/A', 'woocommerce' );
         }
