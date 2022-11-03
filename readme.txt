@@ -2,9 +2,9 @@
 Contributors: alessio.rosi
 Tags: woocommerce orders columns
 Requires at least: 5.8
-Tested up to: 6.1.1
+Tested up to: 6.1
 Requires PHP: 7
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 License: GPL2
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
