@@ -56,22 +56,22 @@ function er_pmoc_action_manage_shop_order_posts_custom_column( $column, $post_id
 			switch ($payment_method) {
 				case 'cod':
 					//echo '<img src="' . plugin_dir_url( __FILE__ ) .'/img/cash.svg" width="30" height="30">';
-					echo wp_kses_data("<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/cash.svg' width='30' height='30'></a></span></mark>");
+					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".wp_kses_data(ucfirst( $payment_method_title ))."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/cash.svg' width='30' height='30'></a></span></mark>";
 					break;
 				case 'bacs':
-					echo wp_kses_data("<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/wired-transfer.svg' width='30' height='30'></a></span></mark>");
+					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".wp_kses_data(ucfirst( $payment_method_title ))."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/wired-transfer.svg' width='30' height='30'></a></span></mark>";
 					break;
 				case 'cheque':
-					echo wp_kses_data("<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/bollettino.svg' width='30' height='30'></a></span></mark>");
+					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".wp_kses_data(ucfirst( $payment_method_title ))."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/bollettino.svg' width='30' height='30'></a></span></mark>";
 					break;
 				case 'paypal':
-					echo wp_kses_data("<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/credit-card.svg' width='30' height='30'></a></span></mark>");
+					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".wp_kses_data(ucfirst( $payment_method_title ))."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/credit-card.svg' width='30' height='30'></a></span></mark>";
 					break;
 				case 'stripe':
-					echo wp_kses_data("<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/stripe.svg' width='30' height='30'></a></span></mark>");
+					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".wp_kses_data(ucfirst( $payment_method_title ))."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/stripe.svg' width='30' height='30'></a></span></mark>";
 					break;					
 				default:
-					echo wp_kses_data("<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/generic.svg' width='30' height='30'></a></span></mark>");
+					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".wp_kses_data(ucfirst( $payment_method_title ))."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/generic.svg' width='30' height='30'></a></span></mark>";
 					break;
 
 										
@@ -91,16 +91,16 @@ function er_pmoc_action_restrict_manage_posts( $post_type, $which ) {
     // Compare
     if ( $post_type === 'shop_order' && $pagenow === 'edit.php' ) {
         // Filter ID
-        //$filter_id  = 'filter-by-payment';
-		$filter_id=sanitize_text_field($_GET[$filter_id]);
-        
-        $current    = isset( $filter_id ) ? $filter_id : '';
+        $filter_id  = 'filter-by-payment';
+        $payment_filter=sanitize_text_field($_GET[$filter_id]);
+        $current    = isset( $payment_filter ) ? $payment_filter : '';
         
         // Get available gateways
         $available_gateways = WC()->payment_gateways->get_available_payment_gateways();
 
         // Create a drop-down list 
-        echo wp_kses_data('<select name="' . $filter_id . '"><option value="">' . __( 'Metodo di pagamento', 'woocommerce' ) . '</option>');
+        echo '<select name="' . $filter_id . '">
+        <option value="">' . __( 'Metodo di pagamento', 'woocommerce' ) . '</option>';
 
        // foreach ( $available_gateways as $key => $available_gateway ) {
        	foreach ( $available_gateways as $key ) {
@@ -108,7 +108,7 @@ function er_pmoc_action_restrict_manage_posts( $post_type, $which ) {
          	   printf( '<option %s value="%s">%s</option>', $key->id === $current ? 'selected="selected"' : '', $key->id, $key->get_title() );
         }
         
-        echo wp_kses_data('</select>');
+        echo '</select>';
     }
 }
 add_action( 'restrict_manage_posts', 'er_pmoc_action_restrict_manage_posts', 10, 2 );
@@ -118,12 +118,13 @@ function er_pmoc_filter_request( $vars ) {
     global $pagenow, $typenow;
 
     // Filter ID
-    //$filter_id = 'filter-by-payment';
-	$filter_id=sanitize_text_field($_GET[$filter_id]);
+    $filter_id = 'filter-by-payment';
+	$payment_filter=sanitize_text_field($_GET[$filter_id]);
+
     // Only on WooCommerce admin orders list
-    if ( $pagenow == 'edit.php' && 'shop_order' === $typenow && isset( $filter_id ) && ! empty( $filter_id ) ) {
+    if ( $pagenow == 'edit.php' && 'shop_order' === $typenow && isset($payment_filter ) && ! empty( $payment_filter ) ) {
         $vars['meta_key']   = '_payment_method';
-        $vars['meta_value'] = $filter_id;
+        $vars['meta_value'] = $payment_filter;
         //$vars['orderby']    = 'meta_value';
     }
     
@@ -139,13 +140,5 @@ function er_pmoc_shop_order_column_meta_field_sortable( $columns )
     $meta_key = '_payment_method';
     return wp_parse_args( array('order_payment_method' => $meta_key), $columns );
 }
-
-
-
-
-
-
-
-
 
 ?>
