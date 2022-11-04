@@ -53,25 +53,42 @@ function er_pmoc_action_manage_shop_order_posts_custom_column( $column, $post_id
         
         // NOT empty
         if ( ! empty ( $payment_method ) ) {
+            $allowed_html=array(
+                'mark' => array(
+                    'style' => array(),
+                    'class' => array(),
+                    'data-tip' => array()
+                ),
+                'span' => array(),
+                'a' => array(
+                    'href' => array()
+                ),
+                'img' => array(
+                    'style' => array(),
+                    'src' => array(),
+                    'width' => array(),
+                    'height' => array()
+                )         
+            );
 			switch ($payment_method) {
 				case 'cod':
 					//echo '<img src="' . plugin_dir_url( __FILE__ ) .'/img/cash.svg" width="30" height="30">';
-					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".wp_kses_data(ucfirst( $payment_method_title ))."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/cash.svg' width='30' height='30'></a></span></mark>";
+					echo wp_kses("<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/cash.svg' width='30' height='30'></a></span></mark>", $allowed_html);
 					break;
 				case 'bacs':
-					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".wp_kses_data(ucfirst( $payment_method_title ))."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/wired-transfer.svg' width='30' height='30'></a></span></mark>";
+					echo wp_kses("<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/wired-transfer.svg' width='30' height='30'></a></span></mark>", $allowed_html);
 					break;
 				case 'cheque':
-					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".wp_kses_data(ucfirst( $payment_method_title ))."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/bollettino.svg' width='30' height='30'></a></span></mark>";
+					echo wp_kses("<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/bollettino.svg' width='30' height='30'></a></span></mark>", $allowed_html);
 					break;
 				case 'paypal':
-					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".wp_kses_data(ucfirst( $payment_method_title ))."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/credit-card.svg' width='30' height='30'></a></span></mark>";
+					echo wp_kses("<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/credit-card.svg' width='30' height='30'></a></span></mark>", $allowed_html);
 					break;
 				case 'stripe':
-					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".wp_kses_data(ucfirst( $payment_method_title ))."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/stripe.svg' width='30' height='30'></a></span></mark>";
+					echo wp_kses("<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/stripe.svg' width='30' height='30'></a></span></mark>", $allowed_html);
 					break;					
 				default:
-					echo "<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".wp_kses_data(ucfirst( $payment_method_title ))."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/generic.svg' width='30' height='30'></a></span></mark>";
+					echo wp_kses("<mark  style='vertical-align:super;margin-right:5px' class='order-status tips' data-tip='".ucfirst( $payment_method_title )."'><span><a href='#'><img style='vertical-align:middle;' src='". plugin_dir_url( __FILE__ )."/img/generic.svg' width='30' height='30'></a></span></mark>", $allowed_html);
 					break;
 
 										
@@ -95,21 +112,43 @@ function er_pmoc_action_restrict_manage_posts( $post_type, $which ) {
         $payment_filter=sanitize_text_field($_GET[$filter_id]);
         $current    = isset( $payment_filter ) ? $payment_filter : '';
         
-        // Get available gateways
+        // Get available gateways wp_kses_data()
         $available_gateways = WC()->payment_gateways->get_available_payment_gateways();
 
         // Create a drop-down list 
-        echo '<select name="' . $filter_id . '">
+        $dropdown= '<select name="' . $filter_id . '">
         <option value="">' . __( 'Metodo di pagamento', 'woocommerce' ) . '</option>';
 
        // foreach ( $available_gateways as $key => $available_gateway ) {
        	foreach ( $available_gateways as $key ) {
          //   printf( '<option %s value="%s">%s</option>', $key === $current ? 'selected="selected"' : '', $key, ucfirst( $key ) );
-         	   printf( '<option %s value="%s">%s</option>', $key->id === $current ? 'selected="selected"' : '', $key->id, $key->get_title() );
+         	   //printf( '<option %s value="%s">%s</option>', $key->id === $current ? 'selected="selected"' : '', $key->id, $key->get_title() );
+            $dropdown.='<option ';
+           ($key->id === $current ? $dropdown.='selected="selected"' : $dropdown.='');
+           //if ($key->id == $current){
+           // $dropdown.='selected="selected"';
+           //} else {
+           // $dropdown.='';
+           //}
+
+           $dropdown.=' value="'.$key->id .'">'.$key->get_title().'</option>';
         }
         
-        echo '</select>';
-    }
+        $dropdown.='</select>';
+        $allowed_html=array(
+            'select' => array(
+                'name' => array()
+                
+            ),
+            'option' => array(
+                'value' => array(),
+                'selected' =>array()
+            )
+        );
+        echo wp_kses($dropdown,$allowed_html);
+        //echo $dropdown;
+   
+}
 }
 add_action( 'restrict_manage_posts', 'er_pmoc_action_restrict_manage_posts', 10, 2 );
 
