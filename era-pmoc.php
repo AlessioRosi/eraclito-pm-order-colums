@@ -35,7 +35,7 @@ register_deactivation_hook(__FILE__, 'er_pmoc_deactivation');
 function er_pmoc_filter_manage_edit_shop_order_columns( $columns ) {    
     // Add new column after order status (4) column
     return array_slice( $columns, 0, 4, true )
-    + array( 'order_payment_method' => __( 'Metodo di Pagamento', 'woocommerce' ) )
+    + array( 'order_payment_method' => __( 'Payment methods', 'woocommerce' ) )
     + array_slice( $columns, 4, NULL, true );
 }
 add_filter( 'manage_edit-shop_order_columns', 'er_pmoc_filter_manage_edit_shop_order_columns', 10, 1 );
@@ -117,7 +117,7 @@ function er_pmoc_action_restrict_manage_posts( $post_type, $which ) {
 
         // Create a drop-down list 
         $dropdown= '<select name="' . $filter_id . '">
-        <option value="">' . __( 'Metodo di pagamento', 'woocommerce' ) . '</option>';
+        <option value="">' . __( 'Payment methods', 'woocommerce' ) . '</option>';
 
        // foreach ( $available_gateways as $key => $available_gateway ) {
        	foreach ( $available_gateways as $key ) {
