@@ -3,7 +3,7 @@
 Plugin Name:  Payment Method Order Column
 Plugin URI:   https://www.eraclito.it/applicazioni-web/poste-delivery-business-integrazione-woocommerce/
 Description:  Add a column to to oder list to filter orders by payment method
-Version:      1.6.3
+Version:      1.6.4
 Author:       Eraclito - Alessio Rosi 
 Author URI:   https://www.eraclito.it
 License:      GPL2
@@ -15,7 +15,7 @@ Domain Path:  /languages
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) { exit; }
-define('ERPMOC_VERSION', '1.6.1');
+define('ERPMOC_VERSION', '1.6.4');
 
 // register_activation
 function er_pmoc_activation() {
