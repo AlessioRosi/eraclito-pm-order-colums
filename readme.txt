@@ -2,7 +2,7 @@
 Contributors: alessio.rosi
 Tags: woocommerce orders columns
 Requires at least: 5.8
-Tested up to: 6.2
+Tested up to: 6.5.3
 Requires PHP: 7
 Stable tag: 1.6.4
 License: GPL2
