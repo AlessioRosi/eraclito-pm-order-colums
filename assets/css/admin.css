@@ -1,0 +1,127 @@
+/**
+ * Admin CSS for Payment Method Order Column
+ */
+
+.er-pmoc-settings-table {
+	background: #fff;
+	border-collapse: collapse;
+	width: 100%;
+	max-width: 900px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.er-pmoc-settings-table thead {
+	background: #f9f9f9;
+	border-bottom: 2px solid #ddd;
+}
+
+.er-pmoc-settings-table thead th {
+	padding: 12px 15px;
+	text-align: left;
+	font-weight: 600;
+	color: #333;
+}
+
+.er-pmoc-settings-table tbody tr {
+	border-bottom: 1px solid #eee;
+	transition: background-color 0.2s;
+}
+
+.er-pmoc-settings-table tbody tr:hover {
+	background-color: #f9f9f9;
+}
+
+.er-pmoc-settings-table tbody td {
+	padding: 15px;
+	vertical-align: middle;
+}
+
+.er-pmoc-settings-table tbody td:first-child {
+	font-weight: 500;
+}
+
+.er-pmoc-settings-table code {
+	background: #f0f0f1;
+	padding: 2px 6px;
+	border-radius: 3px;
+	font-size: 12px;
+	color: #666;
+	margin-top: 5px;
+	display: inline-block;
+}
+
+.er-pmoc-icon-preview {
+	display: block;
+	border: 2px solid #ddd;
+	border-radius: 5px;
+	padding: 5px;
+	background: #fff;
+	object-fit: contain;
+}
+
+.er-pmoc-icon-value {
+	display: inline-block;
+	padding: 5px 10px;
+	background: #f0f0f1;
+	border-radius: 3px;
+	font-size: 13px;
+	color: #333;
+}
+
+.er-pmoc-icon-value em {
+	color: #999;
+	font-style: italic;
+}
+
+.er-pmoc-upload-icon {
+	margin-right: 10px;
+}
+
+.er-pmoc-reset-icon {
+	color: #d63638;
+	border-color: #d63638;
+}
+
+.er-pmoc-reset-icon:hover {
+	background: #d63638;
+	color: #fff;
+	border-color: #d63638;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 782px) {
+	.er-pmoc-settings-table {
+		display: block;
+		overflow-x: auto;
+	}
+
+	.er-pmoc-settings-table thead {
+		display: none;
+	}
+
+	.er-pmoc-settings-table tbody tr {
+		display: block;
+		margin-bottom: 20px;
+		border: 1px solid #ddd;
+		border-radius: 5px;
+	}
+
+	.er-pmoc-settings-table tbody td {
+		display: block;
+		text-align: left;
+		padding: 10px 15px;
+		border-bottom: 1px solid #eee;
+	}
+
+	.er-pmoc-settings-table tbody td:last-child {
+		border-bottom: none;
+	}
+
+	.er-pmoc-settings-table tbody td:before {
+		content: attr(data-label);
+		font-weight: 600;
+		display: block;
+		margin-bottom: 5px;
+		color: #666;
+	}
+}

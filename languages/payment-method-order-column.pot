@@ -1,0 +1,87 @@
+# Copyright (C) 2025 Eraclito - Alessio Rosi
+# This file is distributed under the GPL2.
+msgid ""
+msgstr ""
+"Project-Id-Version: Colonna Metodo di Pagamento Ordini 3.0.0\n"
+"Report-Msgid-Bugs-To: https://www.eraclito.it\n"
+"POT-Creation-Date: 2025-01-06 00:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: Eraclito\n"
+
+#: era-pmoc.php:170
+msgid "<strong>Payment Method Order Column</strong> richiede che %s sia installato e attivo."
+msgstr ""
+
+#: era-pmoc.php:189
+msgid "Metodo di Pagamento"
+msgstr ""
+
+#: era-pmoc.php:206 era-pmoc.php:214
+msgid "N/D"
+msgstr ""
+
+#: era-pmoc.php:300
+msgid "Filtra per metodo di pagamento"
+msgstr ""
+
+#: era-pmoc.php:390
+msgid "Impostazioni Colonna Metodo di Pagamento"
+msgstr ""
+
+#: era-pmoc.php:391
+msgid "Colonna Pagamento"
+msgstr ""
+
+#: era-pmoc.php:485
+msgid "Impostazioni salvate con successo."
+msgstr ""
+
+#: era-pmoc.php:493
+msgid "Personalizza le icone per ogni metodo di pagamento nella lista degli ordini."
+msgstr ""
+
+#: era-pmoc.php:502
+msgid "Metodo di Pagamento"
+msgstr ""
+
+#: era-pmoc.php:503
+msgid "Icona Attuale"
+msgstr ""
+
+#: era-pmoc.php:504
+msgid "Icona Personalizzata"
+msgstr ""
+
+#: era-pmoc.php:505
+msgid "Azioni"
+msgstr ""
+
+#: era-pmoc.php:511
+msgid "Predefinita (Fallback)"
+msgstr ""
+
+#: era-pmoc.php:521
+msgid "Salva Impostazioni"
+msgstr ""
+
+#: era-pmoc.php:570
+msgid "Uso icona predefinita"
+msgstr ""
+
+#: era-pmoc.php:577
+msgid "Carica Icona"
+msgstr ""
+
+#: era-pmoc.php:581
+msgid "Ripristina Predefinita"
+msgstr ""
+
+#: era-pmoc.php:610
+msgid "Questo plugin richiede che WooCommerce sia installato e attivo."
+msgstr ""
+
+#: era-pmoc.php:611
+msgid "Errore Attivazione Plugin"
+msgstr ""
