@@ -112,7 +112,7 @@ class PoToMoCompiler {
 			$str_offset += strlen($translation) + 1;
 		}
 
-		$content = pack('Vx12V2', 0x950412de, $count, $ids_offset, $strs_offset);
+		$content = pack('V7', 0x950412de, 0, $count, $ids_offset, $strs_offset, 0, 0);
 		$content .= $ids . $strs;
 
 		foreach ($originals as $original) {

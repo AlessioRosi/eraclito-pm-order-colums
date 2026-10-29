@@ -11,9 +11,9 @@
  * Text Domain:       payment-method-order-column
  * Domain Path:       /languages
  * Requires at least: 5.0
- * Requires PHP:      7.2
+ * Requires PHP:      7.4
  * WC requires at least: 4.0
- * WC tested up to:   10.3.4
+ * WC tested up to:   11.2.1
  */
 
 // Exit if accessed directly.
@@ -135,6 +135,9 @@ class ER_Payment_Method_Order_Column {
 		// Filter orders for both CPT and HPOS.
 		add_filter( 'request', array( $this, 'filter_orders_by_payment_method' ), 10, 1 );
 		add_filter( 'woocommerce_order_list_table_prepare_items_query_args', array( $this, 'filter_orders_by_payment_method_hpos' ), 10, 1 );
+
+		// Sort orders by payment method (HPOS).
+		add_filter( 'woocommerce_orders_table_query_clauses', array( $this, 'sort_orders_by_payment_method_hpos' ), 10, 3 );
 
 		// Make column sortable for both CPT and HPOS.
 		add_filter( 'manage_edit-shop_order_sortable_columns', array( $this, 'make_column_sortable' ), 10, 1 );
@@ -299,12 +302,27 @@ class ER_Payment_Method_Order_Column {
 	}
 
 	/**
+	 * Get all registered payment gateways, including disabled ones
+	 *
+	 * Orders placed with a gateway that is now disabled must stay filterable.
+	 *
+	 * @return WC_Payment_Gateway[] Gateways keyed by ID.
+	 */
+	private function get_all_gateways() {
+		if ( ! function_exists( 'WC' ) || ! WC()->payment_gateways() ) {
+			return array();
+		}
+
+		return WC()->payment_gateways()->payment_gateways();
+	}
+
+	/**
 	 * Render the payment method dropdown filter
 	 */
 	private function render_payment_method_dropdown() {
 		$current = isset( $_GET[ $this->filter_id ] ) ? sanitize_text_field( wp_unslash( $_GET[ $this->filter_id ] ) ) : '';
 
-		$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
+		$available_gateways = $this->get_all_gateways();
 
 		if ( empty( $available_gateways ) ) {
 			return;
@@ -338,6 +356,12 @@ class ER_Payment_Method_Order_Column {
 			return $vars;
 		}
 
+		// Sort by payment method.
+		if ( isset( $vars['orderby'] ) && '_payment_method' === $vars['orderby'] ) {
+			$vars['meta_key'] = '_payment_method'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+			$vars['orderby']  = 'meta_value';
+		}
+
 		if ( ! isset( $_GET[ $this->filter_id ] ) ) {
 			return $vars;
 		}
@@ -348,8 +372,8 @@ class ER_Payment_Method_Order_Column {
 			return $vars;
 		}
 
-		$vars['meta_key']   = '_payment_method';
-		$vars['meta_value'] = $payment_method;
+		$vars['meta_key']   = '_payment_method'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+		$vars['meta_value'] = $payment_method; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 
 		return $vars;
 	}
@@ -371,17 +395,33 @@ class ER_Payment_Method_Order_Column {
 			return $args;
 		}
 
-		// For HPOS, we need to filter using meta_query.
-		if ( ! isset( $args['meta_query'] ) ) {
-			$args['meta_query'] = array(); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-		}
-
-		$args['meta_query'][] = array(
-			'key'   => '_payment_method',
-			'value' => $payment_method,
-		);
+		// With HPOS the payment method is a column of the orders table, not meta.
+		$args['payment_method'] = $payment_method;
 
 		return $args;
+	}
+
+	/**
+	 * Sort orders by payment method (for HPOS)
+	 *
+	 * HPOS drops unknown "orderby" values, so the ORDER BY clause is built here.
+	 *
+	 * @param array            $clauses SQL clauses.
+	 * @param OrdersTableQuery $query   Orders query.
+	 * @param array            $args    Raw query arguments.
+	 * @return array Modified clauses.
+	 */
+	public function sort_orders_by_payment_method_hpos( $clauses, $query, $args ) {
+		if ( ! isset( $args['orderby'] ) || '_payment_method' !== $args['orderby'] ) {
+			return $clauses;
+		}
+
+		$direction = ( isset( $args['order'] ) && 'DESC' === strtoupper( $args['order'] ) ) ? 'DESC' : 'ASC';
+		$table     = $query->get_table_name( 'orders' );
+
+		$clauses['orderby'] = "{$table}.payment_method {$direction}, {$table}.id DESC";
+
+		return $clauses;
 	}
 
 	/**
@@ -501,7 +541,7 @@ class ER_Payment_Method_Order_Column {
 
 		$settings         = get_option( $this->option_name, array() );
 		$payment_icons    = isset( $settings['icons'] ) ? $settings['icons'] : array();
-		$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
+		$available_gateways = $this->get_all_gateways();
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html__( 'Impostazioni Colonna Metodo di Pagamento', 'payment-method-order-column' ); ?></h1>

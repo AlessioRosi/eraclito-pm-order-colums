@@ -1,9 +1,9 @@
 === Payment Method Order Column ===
 Contributors: alessio.rosi
 Tags: woocommerce orders columns
-Requires at least: 5.8
-Tested up to: 6.8.3
-Requires PHP: 7
+Requires at least: 5.0
+Tested up to: 7.1.4
+Requires PHP: 7.4
 Stable tag: 3.0.0
 License: GPL2
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
