@@ -3,7 +3,7 @@
  * Plugin Name:       Colonna Metodo di Pagamento Ordini
  * Plugin URI:        https://www.eraclito.it/applicazioni-web/poste-delivery-business-integrazione-woocommerce/
  * Description:       Aggiunge una colonna per filtrare gli ordini in base al metodo di pagamento
- * Version:           3.0.0
+ * Version:           3.0.4
  * Author:            Eraclito - Alessio Rosi
  * Author URI:        https://www.eraclito.it
  * License:           GPL2
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'ERPMOC_VERSION', '3.0.0' );
+define( 'ERPMOC_VERSION', '3.0.4' );
 define( 'ERPMOC_PLUGIN_FILE', __FILE__ );
 define( 'ERPMOC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ERPMOC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

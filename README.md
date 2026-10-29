@@ -11,14 +11,14 @@ Plugin WordPress per WooCommerce che aggiunge una colonna personalizzabile per v
 ✅ **Compatibilità HPOS** (High-Performance Order Storage)
 ✅ **Supporto CPT** (Custom Post Types) legacy
 ✅ **Interfaccia completamente in italiano**
-✅ **Sistema di traduzioni** per altre lingue
+✅ **Traduzioni** italiano ed inglese (en_US), estendibili ad altre lingue
 
 ## Requisiti
 
 - WordPress 5.0 o superiore
 - WooCommerce 4.0 o superiore
-- PHP 7.2 o superiore
-- WooCommerce testato fino alla versione 10.3.4
+- PHP 7.4 o superiore
+- Testato fino a WordPress 7.1.4 e WooCommerce 11.2.1
 
 ## Installazione
 
@@ -50,7 +50,7 @@ Clicca sull'intestazione della colonna "Metodo di Pagamento" per ordinare gli or
 
 ## Metodi di Pagamento Supportati
 
-Il plugin include icone predefinite per:
+Il plugin include icone predefinite per i metodi seguenti. Il menu filtro e la pagina impostazioni elencano tutti i gateway registrati, anche quelli disattivati, così gli ordini vecchi restano filtrabili:
 
 - 💵 Contrassegno (COD)
 - 🏦 Bonifico Bancario (BACS)
@@ -79,9 +79,12 @@ eraclito-pm-order-column/
 │   ├── payment-method-order-column.pot
 │   ├── payment-method-order-column-it_IT.po
 │   ├── payment-method-order-column-it_IT.mo
+│   ├── payment-method-order-column-en_US.po
+│   ├── payment-method-order-column-en_US.mo
 │   ├── compile-mo.php
 │   └── README.md
 ├── era-pmoc.php
+├── readme.txt
 └── README.md
 ```
 
@@ -102,7 +105,8 @@ Il plugin è completamente compatibile con il nuovo sistema HPOS di WooCommerce:
 - ✅ Dichiarazione formale di compatibilità
 - ✅ Supporto per `woocommerce_page_wc-orders` screen
 - ✅ Hooks specifici per HPOS
-- ✅ Filtri ottimizzati con `meta_query`
+- ✅ Filtro tramite l'argomento nativo `payment_method` (colonna di `wc_orders`)
+- ✅ Ordinamento tramite `woocommerce_orders_table_query_clauses`
 - ✅ Funziona con entrambi i sistemi (HPOS e CPT)
 
 ## Traduzioni
@@ -110,7 +114,10 @@ Il plugin è completamente compatibile con il nuovo sistema HPOS di WooCommerce:
 Il plugin è disponibile in:
 
 - 🇮🇹 **Italiano** (predefinito)
+- 🇺🇸 **Inglese** (en_US)
 - 🌍 Altre lingue tramite file .po/.mo
+
+Per usare l'inglese imposta la lingua del sito su English (United States) in Impostazioni → Generali.
 
 Per aggiungere nuove traduzioni, consulta il file `languages/README.md`.
 
@@ -123,6 +130,15 @@ Per supporto e segnalazioni:
 - **Plugin URI**: https://www.eraclito.it/applicazioni-web/poste-delivery-business-integrazione-woocommerce/
 
 ## Changelog
+
+### 3.0.4 (2026-10-30)
+- ✅ Verificata compatibilità con WordPress 7.1.4 e WooCommerce 11.2.1
+- 🐛 Fix ordinamento per metodo di pagamento (HPOS e legacy)
+- 🐛 Fix filtro per metodo di pagamento con HPOS (colonna nativa invece di meta)
+- 🐛 Menu filtro e impostazioni elencano anche i gateway disattivati
+- 🐛 Fix file di lingua: header .mo corretto, msgid duplicato rimosso
+- ✨ Aggiunta traduzione en_US
+- 🔧 Requisito minimo PHP 7.4
 
 ### 3.0.0 (2025-01-06)
 - ✨ Aggiunto supporto HPOS completo
