@@ -6,6 +6,8 @@
 
 	// Track if there are unsaved changes
 	var hasUnsavedChanges = false;
+	var i18n = window.erPmocI18n || {};
+	var $notice;
 
 	$(document).ready(function() {
 
@@ -17,9 +19,11 @@
 				// Check if notice already exists
 				if ($('.er-pmoc-unsaved-notice').length === 0) {
 					var notice = '<div class="notice notice-warning is-dismissible er-pmoc-unsaved-notice">' +
-						'<p><strong>Attenzione:</strong> Hai modifiche non salvate. Ricorda di cliccare su "Salva Impostazioni" per applicare le modifiche.</p>' +
+						'<p></p>' +
 						'</div>';
-					$('.wrap h1').after(notice);
+					$notice = $(notice);
+					$notice.find('p').text(i18n.unsavedNotice);
+					$('.wp-header-end').after($notice);
 				}
 			}
 		}
@@ -36,15 +40,15 @@
 
 			// Check if wp.media is available
 			if (typeof wp === 'undefined' || typeof wp.media === 'undefined') {
-				alert('Errore: Media Library non disponibile.');
+				window.alert(i18n.mediaUnavailable);
 				return;
 			}
 
 			// Create WordPress media uploader
 			var mediaUploader = wp.media({
-				title: 'Seleziona Icona',
+				title: i18n.selectIcon,
 				button: {
-					text: 'Usa questa icona'
+					text: i18n.useIcon
 				},
 				multiple: false,
 				library: {
@@ -63,12 +67,12 @@
 				previewImg.attr('src', attachment.url);
 
 				// Update value span
-				valueSpan.html(attachment.filename);
+				valueSpan.text(attachment.filename);
 
 				// Show reset button if not already visible
 				var resetBtn = button.siblings('.er-pmoc-reset-icon');
 				if (resetBtn.length === 0) {
-					button.after(' <button type="button" class="button er-pmoc-reset-icon" data-method="' + methodId + '">Ripristina Predefinita</button>');
+					button.after($('<button type="button" class="button er-pmoc-reset-icon"></button>').attr('data-method', methodId).text(i18n.reset));
 				}
 
 				// Show unsaved changes notice
@@ -101,7 +105,7 @@
 			}
 
 			// Update value span
-			valueSpan.html('<em>Uso icona predefinita</em>');
+			valueSpan.empty().append($('<em></em>').text(i18n.usingDefault));
 
 			// Remove reset button
 			button.remove();
@@ -113,7 +117,7 @@
 		// Warn user before leaving page with unsaved changes
 		$(window).on('beforeunload', function() {
 			if (hasUnsavedChanges) {
-				return 'Hai modifiche non salvate. Sei sicuro di voler uscire?';
+				return i18n.unsavedLeave;
 			}
 		});
 

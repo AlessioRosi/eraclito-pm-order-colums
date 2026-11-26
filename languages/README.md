@@ -7,18 +7,16 @@ Questa cartella contiene i file di traduzione per il plugin "Colonna Metodo di P
 - `payment-method-order-column.pot` - Template di traduzione (POT)
 - `payment-method-order-column-it_IT.po` - Traduzione italiana (PO)
 - `payment-method-order-column-it_IT.mo` - Traduzione italiana compilata (MO)
-- `compile-mo.php` - Script per compilare i file .po in .mo
 
 ## Lingua Predefinita
 
-L'italiano (it_IT) è la lingua predefinita del plugin. Tutte le stringhe nel codice sono già in italiano.
+L'inglese è la lingua del codice. La traduzione italiana (it_IT) viene caricata automaticamente quando il sito è in italiano.
 
 ## Come Aggiungere Nuove Traduzioni
 
 ### 1. Creare un nuovo file .po
 
 Copia il file `payment-method-order-column.pot` e rinominalo secondo la locale desiderata:
-- Inglese: `payment-method-order-column-en_US.po`
 - Francese: `payment-method-order-column-fr_FR.po`
 - Tedesco: `payment-method-order-column-de_DE.po`
 - Spagnolo: `payment-method-order-column-es_ES.po`
@@ -34,16 +32,10 @@ msgstr "Payment Method"
 
 ### 3. Compilare il file .mo
 
-Esegui lo script di compilazione:
+Usa Poedit o msgfmt:
 
 ```bash
-php compile-mo.php
-```
-
-Oppure usa Poedit o msgfmt:
-
-```bash
-msgfmt payment-method-order-column-en_US.po -o payment-method-order-column-en_US.mo
+msgfmt payment-method-order-column-it_IT.po -o payment-method-order-column-it_IT.mo
 ```
 
 ## Testare le Traduzioni

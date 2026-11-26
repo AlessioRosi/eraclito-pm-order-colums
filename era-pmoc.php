@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name:       Colonna Metodo di Pagamento Ordini
+ * Plugin Name:       Payment Method Order Column
  * Plugin URI:        https://www.eraclito.it/applicazioni-web/poste-delivery-business-integrazione-woocommerce/
- * Description:       Aggiunge una colonna per filtrare gli ordini in base al metodo di pagamento
- * Version:           3.0.4
+ * Description:       Adds a payment method column to the WooCommerce orders list, with filtering and sorting.
+ * Version:           3.1.1
  * Author:            Eraclito - Alessio Rosi
  * Author URI:        https://www.eraclito.it
  * License:           GPL2
@@ -13,7 +13,9 @@
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * WC requires at least: 4.0
- * WC tested up to:   11.2.1
+ * WC tested up to:   11.3.1
+ *
+ * @package ER_Payment_Method_Order_Column
  */
 
 // Exit if accessed directly.
@@ -22,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'ERPMOC_VERSION', '3.0.4' );
+define( 'ERPMOC_VERSION', '3.1.1' );
 define( 'ERPMOC_PLUGIN_FILE', __FILE__ );
 define( 'ERPMOC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ERPMOC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -184,7 +186,7 @@ class ER_Payment_Method_Order_Column {
 				echo wp_kses_post(
 					sprintf(
 						/* translators: %s: WooCommerce plugin name */
-						__( '<strong>Payment Method Order Column</strong> richiede che %s sia installato e attivo.', 'payment-method-order-column' ),
+						__( '<strong>Payment Method Order Column</strong> requires %s to be installed and active.', 'payment-method-order-column' ),
 						'<a href="https://wordpress.org/plugins/woocommerce/" target="_blank">WooCommerce</a>'
 					)
 				);
@@ -203,7 +205,7 @@ class ER_Payment_Method_Order_Column {
 	public function add_payment_method_column( $columns ) {
 		// Add new column after order status (position 4).
 		return array_slice( $columns, 0, 4, true )
-			+ array( $this->column_id => __( 'Metodo di Pagamento', 'payment-method-order-column' ) )
+			+ array( $this->column_id => __( 'Payment Method', 'payment-method-order-column' ) )
 			+ array_slice( $columns, 4, null, true );
 	}
 
@@ -220,7 +222,7 @@ class ER_Payment_Method_Order_Column {
 
 		$order = wc_get_order( $post_id );
 		if ( ! $order ) {
-			echo esc_html__( 'N/D', 'payment-method-order-column' );
+			echo esc_html__( 'N/A', 'payment-method-order-column' );
 			return;
 		}
 
@@ -228,7 +230,7 @@ class ER_Payment_Method_Order_Column {
 		$payment_method_title = $order->get_payment_method_title();
 
 		if ( empty( $payment_method ) ) {
-			echo esc_html__( 'N/D', 'payment-method-order-column' );
+			echo esc_html__( 'N/A', 'payment-method-order-column' );
 			return;
 		}
 
@@ -329,7 +331,7 @@ class ER_Payment_Method_Order_Column {
 		}
 
 		echo '<select name="' . esc_attr( $this->filter_id ) . '">';
-		echo '<option value="">' . esc_html__( 'Filtra per metodo di pagamento', 'payment-method-order-column' ) . '</option>';
+		echo '<option value="">' . esc_html__( 'Filter by payment method', 'payment-method-order-column' ) . '</option>';
 
 		foreach ( $available_gateways as $gateway ) {
 			printf(
@@ -441,8 +443,8 @@ class ER_Payment_Method_Order_Column {
 	public function add_settings_menu() {
 		add_submenu_page(
 			'woocommerce',
-			__( 'Impostazioni Colonna Metodo di Pagamento', 'payment-method-order-column' ),
-			__( 'Colonna Pagamento', 'payment-method-order-column' ),
+			__( 'Payment Method Column Settings', 'payment-method-order-column' ),
+			__( 'Payment Column', 'payment-method-order-column' ),
 			'manage_woocommerce',
 			'er-payment-method-column',
 			array( $this, 'render_settings_page' )
@@ -515,6 +517,20 @@ class ER_Payment_Method_Order_Column {
 			true
 		);
 
+		wp_localize_script(
+			'er-pmoc-admin',
+			'erPmocI18n',
+			array(
+				'mediaUnavailable' => __( 'Error: Media Library not available.', 'payment-method-order-column' ),
+				'selectIcon'       => __( 'Select Icon', 'payment-method-order-column' ),
+				'useIcon'          => __( 'Use this icon', 'payment-method-order-column' ),
+				'reset'            => __( 'Reset to Default', 'payment-method-order-column' ),
+				'usingDefault'     => __( 'Using default icon', 'payment-method-order-column' ),
+				'unsavedNotice'    => __( 'You have unsaved changes. Remember to click "Save Settings" to apply them.', 'payment-method-order-column' ),
+				'unsavedLeave'     => __( 'You have unsaved changes. Are you sure you want to leave?', 'payment-method-order-column' ),
+			)
+		);
+
 		// Enqueue admin styles.
 		wp_enqueue_style(
 			'er-pmoc-admin',
@@ -532,47 +548,61 @@ class ER_Payment_Method_Order_Column {
 			return;
 		}
 
+		$saved_notice = '';
+
 		// Handle form submission.
 		if ( isset( $_POST['er_pmoc_settings_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['er_pmoc_settings_nonce'] ) ), 'er_pmoc_save_settings' ) ) {
-			$settings = isset( $_POST[ $this->option_name ] ) ? $this->sanitize_settings( wp_unslash( $_POST[ $this->option_name ] ) ) : array();
+			$settings = isset( $_POST[ $this->option_name ] ) ? $this->sanitize_settings( wp_unslash( $_POST[ $this->option_name ] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized in sanitize_settings().
 			update_option( $this->option_name, $settings );
-			echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Impostazioni salvate con successo.', 'payment-method-order-column' ) . '</p></div>';
+			$saved_notice = '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Settings saved successfully.', 'payment-method-order-column' ) . '</p></div>';
 		}
 
-		$settings         = get_option( $this->option_name, array() );
-		$payment_icons    = isset( $settings['icons'] ) ? $settings['icons'] : array();
+		$settings           = get_option( $this->option_name, array() );
+		$payment_icons      = isset( $settings['icons'] ) ? $settings['icons'] : array();
 		$available_gateways = $this->get_all_gateways();
 		?>
-		<div class="wrap">
-			<h1><?php echo esc_html__( 'Impostazioni Colonna Metodo di Pagamento', 'payment-method-order-column' ); ?></h1>
-			<p><?php echo esc_html__( 'Personalizza le icone per ogni metodo di pagamento nella lista degli ordini.', 'payment-method-order-column' ); ?></p>
+		<div class="wrap er-pmoc-wrap">
+			<div class="er-pmoc-header">
+				<div class="er-pmoc-header-text">
+					<h1><span class="dashicons dashicons-money-alt" aria-hidden="true"></span><?php echo esc_html__( 'Payment Method Column Settings', 'payment-method-order-column' ); ?></h1>
+					<p><?php echo esc_html__( 'Customize the icon for each payment method in the orders list.', 'payment-method-order-column' ); ?></p>
+				</div>
+				<div class="er-pmoc-header-logo"><img src="<?php echo esc_url( ERPMOC_PLUGIN_URL . 'assets/img/logo-eraclito.png' ); ?>" alt="Eraclito" /></div>
+				<span class="er-pmoc-ribbon"><span>V.<?php echo esc_html( ERPMOC_VERSION ); ?></span></span>
+			</div>
+			<hr class="wp-header-end" />
+			<?php echo $saved_notice; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped when built. ?>
 
 			<form method="post" action="">
 				<?php wp_nonce_field( 'er_pmoc_save_settings', 'er_pmoc_settings_nonce' ); ?>
 
-				<table class="form-table er-pmoc-settings-table">
-					<thead>
-						<tr>
-							<th><?php echo esc_html__( 'Metodo di Pagamento', 'payment-method-order-column' ); ?></th>
-							<th><?php echo esc_html__( 'Icona Attuale', 'payment-method-order-column' ); ?></th>
-							<th><?php echo esc_html__( 'Icona Personalizzata', 'payment-method-order-column' ); ?></th>
-							<th><?php echo esc_html__( 'Azioni', 'payment-method-order-column' ); ?></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-						// Add default icon setting first.
-						$this->render_icon_setting_row( 'default', __( 'Predefinita (Fallback)', 'payment-method-order-column' ), $payment_icons );
+				<div class="er-pmoc-panel">
+					<h2 class="er-pmoc-panel-title"><?php echo esc_html__( 'Payment method icons', 'payment-method-order-column' ); ?></h2>
+					<p class="er-pmoc-panel-sub"><?php echo esc_html__( 'Upload a custom icon, or leave the default one.', 'payment-method-order-column' ); ?></p>
+					<table class="er-pmoc-settings-table">
+						<thead>
+							<tr>
+								<th><?php echo esc_html__( 'Payment Method', 'payment-method-order-column' ); ?></th>
+								<th><?php echo esc_html__( 'Current Icon', 'payment-method-order-column' ); ?></th>
+								<th><?php echo esc_html__( 'Custom Icon', 'payment-method-order-column' ); ?></th>
+								<th><?php echo esc_html__( 'Actions', 'payment-method-order-column' ); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+							// Add default icon setting first.
+							$this->render_icon_setting_row( 'default', __( 'Default (Fallback)', 'payment-method-order-column' ), $payment_icons );
 
-						// Add settings for each available gateway.
-						foreach ( $available_gateways as $gateway ) {
-							$this->render_icon_setting_row( $gateway->id, $gateway->get_title(), $payment_icons );
-						}
-						?>
-					</tbody>
-				</table>
+							// Add settings for each available gateway.
+							foreach ( $available_gateways as $gateway ) {
+								$this->render_icon_setting_row( $gateway->id, $gateway->get_title(), $payment_icons );
+							}
+							?>
+						</tbody>
+					</table>
+				</div>
 
-				<?php submit_button( __( 'Salva Impostazioni', 'payment-method-order-column' ) ); ?>
+				<div class="er-pmoc-actions"><?php submit_button( __( 'Save Settings', 'payment-method-order-column' ) ); ?></div>
 			</form>
 		</div>
 		<?php
@@ -621,18 +651,18 @@ class ER_Payment_Method_Order_Column {
 					if ( ! empty( $current_icon ) ) {
 						echo esc_html( basename( $current_icon ) );
 					} else {
-						echo '<em>' . esc_html__( 'Uso icona predefinita', 'payment-method-order-column' ) . '</em>';
+						echo '<em>' . esc_html__( 'Using default icon', 'payment-method-order-column' ) . '</em>';
 					}
 					?>
 				</span>
 			</td>
 			<td>
 				<button type="button" class="button er-pmoc-upload-icon" data-method="<?php echo esc_attr( $method_id ); ?>">
-					<?php echo esc_html__( 'Carica Icona', 'payment-method-order-column' ); ?>
+					<?php echo esc_html__( 'Upload Icon', 'payment-method-order-column' ); ?>
 				</button>
 				<?php if ( ! empty( $current_icon ) ) : ?>
 					<button type="button" class="button er-pmoc-reset-icon" data-method="<?php echo esc_attr( $method_id ); ?>">
-						<?php echo esc_html__( 'Ripristina Predefinita', 'payment-method-order-column' ); ?>
+						<?php echo esc_html__( 'Reset to Default', 'payment-method-order-column' ); ?>
 					</button>
 				<?php endif; ?>
 			</td>
@@ -661,8 +691,8 @@ function er_pmoc_activation() {
 	if ( ! class_exists( 'WooCommerce' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 		wp_die(
-			esc_html__( 'Questo plugin richiede che WooCommerce sia installato e attivo.', 'payment-method-order-column' ),
-			esc_html__( 'Errore Attivazione Plugin', 'payment-method-order-column' ),
+			esc_html__( 'This plugin requires WooCommerce to be installed and active.', 'payment-method-order-column' ),
+			esc_html__( 'Plugin Activation Error', 'payment-method-order-column' ),
 			array( 'back_link' => true )
 		);
 	}

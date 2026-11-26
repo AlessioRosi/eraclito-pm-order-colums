@@ -1,12 +1,9 @@
-# Italian translation for Payment Method Order Column
-# Copyright (C) 2025 Eraclito - Alessio Rosi
-# This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Colonna Metodo di Pagamento Ordini 3.0.4\n"
+"Project-Id-Version: Payment Method Order Column 3.1.1\n"
 "Report-Msgid-Bugs-To: https://www.eraclito.it\n"
-"POT-Creation-Date: 2025-01-06 00:00+0000\n"
-"PO-Revision-Date: 2025-01-06 00:00+0000\n"
+"POT-Creation-Date: 2026-11-26 00:00+0000\n"
+"PO-Revision-Date: 2026-11-26 00:00+0000\n"
 "Last-Translator: Alessio Rosi <info@eraclito.it>\n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -15,56 +12,72 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid "<strong>Payment Method Order Column</strong> richiede che %s sia installato e attivo."
-msgstr "<strong>Colonna Metodo di Pagamento Ordini</strong> richiede che %s sia installato e attivo."
-
-msgid "Metodo di Pagamento"
+msgid "Payment Method"
 msgstr "Metodo di Pagamento"
 
-msgid "N/D"
+msgid "N/A"
 msgstr "N/D"
 
-msgid "Filtra per metodo di pagamento"
+msgid "Filter by payment method"
 msgstr "Filtra per metodo di pagamento"
 
-msgid "Impostazioni Colonna Metodo di Pagamento"
+msgid "Payment Method Column Settings"
 msgstr "Impostazioni Colonna Metodo di Pagamento"
 
-msgid "Colonna Pagamento"
+msgid "Payment Column"
 msgstr "Colonna Pagamento"
 
-msgid "Impostazioni salvate con successo."
-msgstr "Impostazioni salvate con successo."
+msgid "Error: Media Library not available."
+msgstr "Errore: Libreria Media non disponibile."
 
-msgid "Personalizza le icone per ogni metodo di pagamento nella lista degli ordini."
-msgstr "Personalizza le icone per ogni metodo di pagamento nella lista degli ordini."
+msgid "Select Icon"
+msgstr "Seleziona icona"
 
-msgid "Icona Attuale"
-msgstr "Icona Attuale"
+msgid "Use this icon"
+msgstr "Usa questa icona"
 
-msgid "Icona Personalizzata"
-msgstr "Icona Personalizzata"
-
-msgid "Azioni"
-msgstr "Azioni"
-
-msgid "Predefinita (Fallback)"
-msgstr "Predefinita (Fallback)"
-
-msgid "Salva Impostazioni"
-msgstr "Salva Impostazioni"
-
-msgid "Uso icona predefinita"
-msgstr "Uso icona predefinita"
-
-msgid "Carica Icona"
-msgstr "Carica Icona"
-
-msgid "Ripristina Predefinita"
+msgid "Reset to Default"
 msgstr "Ripristina Predefinita"
 
-msgid "Questo plugin richiede che WooCommerce sia installato e attivo."
+msgid "Using default icon"
+msgstr "Uso icona predefinita"
+
+msgid "You have unsaved changes. Are you sure you want to leave?"
+msgstr "Hai modifiche non salvate. Sei sicuro di voler uscire?"
+
+msgid "Settings saved successfully."
+msgstr "Impostazioni salvate con successo."
+
+msgid "Customize the icon for each payment method in the orders list."
+msgstr "Personalizza le icone per ogni metodo di pagamento nella lista degli ordini."
+
+msgid "Payment method icons"
+msgstr "Icone dei metodi di pagamento"
+
+msgid "Upload a custom icon, or leave the default one."
+msgstr "Carica un'icona personalizzata oppure lascia quella predefinita."
+
+msgid "Current Icon"
+msgstr "Icona Attuale"
+
+msgid "Custom Icon"
+msgstr "Icona Personalizzata"
+
+msgid "Actions"
+msgstr "Azioni"
+
+msgid "Default (Fallback)"
+msgstr "Predefinita (Fallback)"
+
+msgid "Save Settings"
+msgstr "Salva Impostazioni"
+
+msgid "Upload Icon"
+msgstr "Carica Icona"
+
+msgid "This plugin requires WooCommerce to be installed and active."
 msgstr "Questo plugin richiede che WooCommerce sia installato e attivo."
 
-msgid "Errore Attivazione Plugin"
+msgid "Plugin Activation Error"
 msgstr "Errore Attivazione Plugin"
+

@@ -10,15 +10,14 @@ Plugin WordPress per WooCommerce che aggiunge una colonna personalizzabile per v
 ✅ **Icone personalizzabili** per ogni metodo di pagamento
 ✅ **Compatibilità HPOS** (High-Performance Order Storage)
 ✅ **Supporto CPT** (Custom Post Types) legacy
-✅ **Interfaccia completamente in italiano**
-✅ **Traduzioni** italiano ed inglese (en_US), estendibili ad altre lingue
+✅ **Interfaccia in inglese** con traduzione italiana inclusa, estendibile ad altre lingue
 
 ## Requisiti
 
 - WordPress 5.0 o superiore
 - WooCommerce 4.0 o superiore
 - PHP 7.4 o superiore
-- Testato fino a WordPress 7.1.4 e WooCommerce 11.2.1
+- Testato fino a WordPress 7.1.5 e WooCommerce 11.3.1
 
 ## Installazione
 
@@ -113,11 +112,11 @@ Il plugin è completamente compatibile con il nuovo sistema HPOS di WooCommerce:
 
 Il plugin è disponibile in:
 
-- 🇮🇹 **Italiano** (predefinito)
-- 🇺🇸 **Inglese** (en_US)
+- 🇺🇸 **Inglese** (lingua del codice)
+- 🇮🇹 **Italiano** (it_IT)
 - 🌍 Altre lingue tramite file .po/.mo
 
-Per usare l'inglese imposta la lingua del sito su English (United States) in Impostazioni → Generali.
+La traduzione italiana si attiva impostando la lingua del sito su Italiano in Impostazioni → Generali.
 
 Per aggiungere nuove traduzioni, consulta il file `languages/README.md`.
 
@@ -130,6 +129,16 @@ Per supporto e segnalazioni:
 - **Plugin URI**: https://www.eraclito.it/applicazioni-web/poste-delivery-business-integrazione-woocommerce/
 
 ## Changelog
+
+### 3.1.1 (2026-11-26)
+- 🔖 Bump di versione
+
+### 3.1.0 (2026-11-26)
+- ✨ Nuovo layout della pagina impostazioni (banner, pannello, brand Eraclito)
+- ✨ Stringhe dell'interfaccia in inglese, traduzione italiana inclusa
+- ✅ Verificata compatibilità con WordPress 7.1.5 e WooCommerce 11.3.1
+- ✨ Aggiunto `uninstall.php` che rimuove le impostazioni
+- ✨ Aggiunte icone, banner e screenshot per la directory dei plugin
 
 ### 3.0.4 (2026-10-30)
 - ✅ Verificata compatibilità con WordPress 7.1.4 e WooCommerce 11.2.1
