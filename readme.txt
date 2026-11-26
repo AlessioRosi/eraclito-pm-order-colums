@@ -20,7 +20,7 @@ Payment Method Order Column adds a column to the WooCommerce orders list in the 
 * Sortable column
 * Customizable icons for each payment method (WooCommerce > Payment Column)
 * Compatible with High-Performance Order Storage (HPOS) and legacy order storage
-* Italian and English translations
+* English interface, Italian translation included
 
 Requires WooCommerce 4.0 or higher. Tested with WooCommerce 11.3.1.
 
